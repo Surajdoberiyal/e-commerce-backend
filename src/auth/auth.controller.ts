@@ -33,7 +33,7 @@ export class AuthController {
     name: 'authorization',
     required: false,
   })
-  @UseGuards(AuthGuard())
+  @UseGuards(AuthGuard('jwt'))
   getMe(@Headers('authorization') authorization: string): Promise<any> {
     const token = authorization.split(' ')[1] || null;
     return this.authService.getMe(token);

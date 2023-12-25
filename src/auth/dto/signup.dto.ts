@@ -2,6 +2,7 @@ import {
   IsEmail,
   IsEnum,
   IsNotEmpty,
+  IsOptional,
   IsString,
   MaxLength,
   MinLength,
@@ -13,42 +14,44 @@ enum UserRole {
   Admin = 'admin',
 }
 
-export class SignUpDto {
+export class UpdateUserDto {
   @IsNotEmpty()
   @IsString()
   @ApiProperty()
-  readonly firstname: string;
+  firstname: string;
 
   @IsNotEmpty()
   @IsString()
   @ApiProperty()
-  readonly lastname: string;
+  lastname: string;
 
   @IsNotEmpty()
   @ApiProperty()
   @IsEmail({}, { message: 'Please enter correct email' })
-  readonly email: string;
+  email: string;
 
   @IsNotEmpty()
   @ApiProperty()
   @MinLength(9)
   @MaxLength(14)
-  readonly phoneNumber: string;
+  phoneNumber: string;
 
   @ApiProperty()
   @IsString()
-  readonly address: string;
+  address: string;
 
   @IsString()
   @ApiProperty()
   @IsEnum(UserRole, {
     message: 'Invalid user role',
   })
-  readonly role: string = 'user';
+  role: string = 'user';
+}
 
-  @IsNotEmpty()
+export class SignUpDto extends UpdateUserDto {
+  @IsNotEmpty({ message: 'Password should not be empty' })
   @IsString()
-  @MinLength(6)
+  @MinLength(6, { message: 'Password should be at least 6 characters long' })
   @ApiProperty()
-  readonly password: string;
+  password: string;
 }
